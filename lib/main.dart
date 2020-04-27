@@ -1,4 +1,3 @@
-import 'result_screen.dart';
 import 'package:flutter/material.dart';
 import 'main_input.dart';
 
@@ -13,10 +12,10 @@ class BMICalculator extends StatelessWidget {
         accentColor: Colors.purple,
       ),
       home: InputPage(),
-      routes: {
-        '0': (context) => InputPage(),
-        '1': (context) => ResultScreen()
-      },
+//      routes: {
+//        '0': (context) => InputPage(),
+//        '1': (context) => ResultScreen()
+//      },
     );
   }
 }

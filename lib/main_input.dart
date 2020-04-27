@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bmi_calculator/Containers/reusablecard.dart';
 import 'package:bmi_calculator/Containers/icon_default.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'constants.dart';
+import 'result_screen.dart';
+import 'business-logic.dart';
 
 const int inactiveCode = 0xff1D1E33;
 const int activeCode = 0xff000051;
-int weight = 55;
-int age = 25;
 
 enum Gender { male, female }
 
@@ -17,9 +18,13 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  int height = 175;
   int maleBtn = inactiveCode;
   int femaleBtn = inactiveCode;
+
+  int weight = 55;
+  int age = 25;
+  int height = 175;
+  bool checkIfSelected = false;
 
   void updateOnClickEvent(Gender gender) {
     switch (gender) {
@@ -52,6 +57,7 @@ class _InputPageState extends State<InputPage> {
                     ontap: () {
                       setState(() {
                         this.updateOnClickEvent(Gender.male);
+                        this.checkIfSelected = true;
                       });
                     },
                     color: Color(maleBtn),
@@ -66,6 +72,7 @@ class _InputPageState extends State<InputPage> {
                     ontap: () {
                       setState(() {
                         this.updateOnClickEvent(Gender.female);
+                        this.checkIfSelected = true;
                       });
                     },
                     color: Color(femaleBtn),
@@ -214,8 +221,42 @@ class _InputPageState extends State<InputPage> {
             ),
             GestureDetector(
               onTap: () {
-              //  Navigator.push(context, MaterialPageRoute(builder: (context) => ResultScreen()));
-                Navigator.pushNamed(context, '1');
+                if (checkIfSelected) {
+                  var cal = Calculate(height: this.height, weight: this.weight);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ResultScreen(
+                          resultPercentage: cal.getResultPercentage(),
+                          result: cal.getResult(),
+                          interpretation: cal.getInterpretation()),
+                    ),
+                  );
+                } else {
+                  Alert(
+                    context: context,
+                    type: AlertType.info,
+                    style: AlertStyle(
+                        backgroundColor: Color(activeCode),
+                        titleStyle: TextStyle(color: Colors.white),
+                        descStyle: TextStyle(color: Colors.white)),
+                    title: 'Message',
+                    desc: "Select gender",
+                    buttons: [
+                      DialogButton(
+                        child: Text(
+                          "ok",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        color: Color.fromRGBO(0, 179, 134, 1.0),
+                        radius: BorderRadius.circular(5.0),
+                        width: 90,
+
+                      ),
+                    ],
+                  ).show();
+                }
               },
               child: Container(
                 color: Colors.pink,

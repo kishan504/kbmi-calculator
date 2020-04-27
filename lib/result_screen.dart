@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'main_input.dart';
+
 class ResultScreen extends StatelessWidget {
+  final String result;
+  final String resultPercentage;
+  final String interpretation;
+
+
+  ResultScreen({this.result, this.resultPercentage, this.interpretation});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,19 +42,23 @@ class ResultScreen extends StatelessWidget {
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            'Over Weight',
+                            this.result,
                             style: TextStyle(
                                 fontSize: 22, fontWeight: FontWeight.bold,color: Colors.lightGreen),
                           ),
                           Text(
-                            '26.7',
+                            this.resultPercentage,
                             style: TextStyle(
                                 fontSize: 100, fontWeight: FontWeight.bold),
                           ),
-                          Text('Hey whsssss up !',
-                              style: TextStyle(fontSize: 22))
+                          Padding(
+                            padding: const EdgeInsets.all(25.0),
+                            child: Text(this.interpretation,
+                                style: TextStyle(fontSize: 18),textAlign: TextAlign.center,),
+                          )
                         ],
                       ),
                     ),
@@ -54,14 +67,19 @@ class ResultScreen extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: 60,
-            color: Colors.pink,
-            child: Center(
-              child: Text(
-                'Re-Calculate',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+          GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  InputPage()));
+            },
+            child: Container(
+              width: double.infinity,
+              height: 60,
+              color: Colors.pink,
+              child: Center(
+                child: Text(
+                  'Re-Calculate',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                ),
               ),
             ),
           )
